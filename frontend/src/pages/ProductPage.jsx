@@ -68,7 +68,7 @@ export const ProductPage = () => {
   };
 
   return (
-    <div>
+    <div className={`${addedToCart?"pointer-events-none  opacity-50":""}`}>
       <Navbar />
 
       <div

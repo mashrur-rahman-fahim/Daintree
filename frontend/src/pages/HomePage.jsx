@@ -54,7 +54,7 @@ const HomePage = () => {
   };
 
   return (
-    <>
+    <div className={`${addedToCart?"pointer-events-none opacity-50":""}`}>
       <div
         className="banner min-w-[1280px]  "
         style={{
@@ -130,13 +130,11 @@ const HomePage = () => {
           <h1 className="mb-4 ml-4 text-primary text-3xl font-bold">
             Featured Products
           </h1>
-          <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-3 ml-4 mr-4">
+          <div className="grid lg:grid-cols-4  grid-cols-3 gap-3 ml-4 mr-4">
             {products.map((product) => (
               <div
                 key={product._id}
-                className={`card bg-base-100 image-full  shadow-xl group overflow-hidden ${
-                  addedToCart ? "pointer-events-none opacity-35" : ""
-                }`}
+                className={`card bg-base-100 image-full  shadow-xl group overflow-hidden `}
               >
                 <figure>
                   <img
@@ -169,7 +167,7 @@ const HomePage = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

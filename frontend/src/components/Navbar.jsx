@@ -7,11 +7,11 @@ import { api } from "../../lib/axios";
 import { AuthContext } from "../context/AuthContext";
 
 export const Navbar = () => {
-  const { cart } = useContext(CartContext);
+  const { cart,addedToCart } = useContext(CartContext);
   const [query, setQuery] = useState();
   const [results, setResults] = useState([]);
   const {checkAuth,loggedIn,loading}=useContext(AuthContext);
- 
+  
   
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export const Navbar = () => {
     return () => searchProduct.cancel();
   }, [query, searchProduct]);
   return (
-    <div className="navbar ">
+    <div className={`navbar ${addedToCart?"pointer-events-none opacity-35":""} `}>
       <div className="  min-w-[1024px] max-w-[1280px] mx-auto h-20 container flex justify-between items-center ">
         <Link to="/">
           <div className="ml-4 text-primary font-bold text-3xl mr-5">
