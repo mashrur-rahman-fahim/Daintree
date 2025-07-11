@@ -1,0 +1,10 @@
+.card.image-full::before {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+.card.image-full:hover::before {
+  opacity: 0.5;
+}
+.alert{
+    width: 50%;
+}
