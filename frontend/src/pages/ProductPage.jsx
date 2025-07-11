@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../../lib/axios";
-import { Navbar } from "../components/navbar";
+import { Navbar } from "../components/Navbar";
 import { CartContext } from "../context/CartContext";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 export const ProductPage = () => {
@@ -31,17 +31,16 @@ export const ProductPage = () => {
         );
         setProducts(res.data.products);
         setTotalPages(res.data.totalPages);
-        
       } catch (error) {
         console.log(error);
       }
     };
     products();
   }, [category, page, selectedBrands]);
-  useEffect(()=>{
+  useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const res= await api.get(`/brands/${category}`, {
+        const res = await api.get(`/brands/${category}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -50,17 +49,12 @@ export const ProductPage = () => {
         console.log(res.data);
       } catch (error) {
         console.log(error);
-        
       }
-     
-    }
-     fetchBrands();
-  },[category])
+    };
+    fetchBrands();
+  }, [category]);
   const filteredProducts = products.filter(
-    (product) =>
-      product.price >= minPrice &&
-      product.price <= maxPrice 
-      
+    (product) => product.price >= minPrice && product.price <= maxPrice
   );
   const nextPage = () => {
     if (page < totalPages - 1) {
@@ -147,12 +141,11 @@ export const ProductPage = () => {
                     <h2 className="card-title">
                       {product.title.toUpperCase()}
                     </h2>
-                    <p className="mt-3">
-                      {product.description}
-                    </p>
+                    <p className="mt-3">{product.description}</p>
                     <div className="card-actions mt-3 justify-between">
                       <h2 className="card-title mt-3 text-secondary text-xl ml-4 font-bold">
-                        ${product.price}</h2>
+                        ${product.price}
+                      </h2>
                       <button
                         className="btn btn-primary"
                         onClick={() => addToCart(product)}

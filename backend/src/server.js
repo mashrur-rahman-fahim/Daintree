@@ -17,7 +17,7 @@ const __dirname = path.resolve();
 
 app.use(cookieParser());
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV !== "development") {
   app.use(
     cors({
       origin: "http://localhost:5173",

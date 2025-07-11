@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "../components/navbar";
+import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { api } from "../../lib/axios";
 

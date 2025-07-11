@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Navbar } from "../components/navbar";
+import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -9,19 +9,18 @@ import { api } from "../../lib/axios";
 import { DeleteIcon, LucideDelete, Trash2 } from "lucide-react";
 
 export const CartPage = () => {
-  const { cart,setCart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
   const [cartItems, setCartItems] = React.useState([]);
-  const {checkAuth, loggedIn,loading} = useContext(AuthContext);
+  const { checkAuth, loggedIn, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     checkAuth();
     const interval = setInterval(() => {
       checkAuth();
     }, 6000);
     return () => clearInterval(interval);
-  },[checkAuth]);
- 
+  }, [checkAuth]);
 
   useEffect(() => {
     const removeDuplicates = (arr) => {
@@ -73,35 +72,40 @@ export const CartPage = () => {
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
-  const handleConfirmOrder = async ()=>{
+  const handleConfirmOrder = async () => {
     if (!loggedIn && !loading) {
       toast.error("Please login to confirm your order");
       navigate("/login");
       return;
     }
     try {
-       await api. post("/orders",{
-        items:cartItems,
-        totalAmount: cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2),
-        status: "pending"
-      },{
-        headers: {
-          "Content-Type": "application/json",
+      await api.post(
+        "/orders",
+        {
+          items: cartItems,
+          totalAmount: cartItems
+            .reduce((total, item) => total + item.price * item.quantity, 0)
+            .toFixed(2),
+          status: "pending",
         },
-        withCredentials: true
-      });
-     
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
       localStorage.setItem("cart", JSON.stringify([]));
-       localStorage.removeItem("cart");
-       setCart([]);
+      localStorage.removeItem("cart");
+      setCart([]);
       setCartItems([]);
       toast.success("Order created successfully");
     } catch (error) {
       console.error("Error creating order:", error);
       toast.error("Failed to create order");
-      
     }
-  }
+  };
   return (
     <div className=" min-h-screen flex flex-col ">
       <Navbar />
@@ -174,8 +178,18 @@ export const CartPage = () => {
             </div>
           </div>
           <div className="button flex justify-between mt-20 ml-5 mr-5">
-            <button onClick={() => navigate("/")} className="btn btn-primary btn-lg font-bold text-xl">Continue Shopping</button>
-            <button onClick={handleConfirmOrder} className="btn btn-secondary btn-lg font-bold text-xl">Confirm Order</button>
+            <button
+              onClick={() => navigate("/")}
+              className="btn btn-primary btn-lg font-bold text-xl"
+            >
+              Continue Shopping
+            </button>
+            <button
+              onClick={handleConfirmOrder}
+              className="btn btn-secondary btn-lg font-bold text-xl"
+            >
+              Confirm Order
+            </button>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Navbar } from "../components/navbar";
+import { Navbar } from "../components/Navbar";
 import "./HomePage.css";
 import { api } from "../../lib/axios";
 import { Link as ScrollLink } from "react-scroll";
@@ -8,12 +8,11 @@ import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { Footer } from "../components/Footer";
 
-
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
-  const {addToCart,addedToCart}=useContext(CartContext);
+  const { addToCart, addedToCart } = useContext(CartContext);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -49,11 +48,9 @@ const HomePage = () => {
     getCategories();
   }, []);
   const handleAddToCart = (product) => {
-    
     addToCart(product);
- 
-    console.log(addedToCart)
-    
+
+    console.log(addedToCart);
   };
 
   return (
@@ -69,7 +66,6 @@ const HomePage = () => {
           backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          
         }}
       >
         <Navbar />
@@ -111,17 +107,17 @@ const HomePage = () => {
                   className="card  bg-gradient-to-tl from-base-100 to-[#133561]  shadow-xl"
                 >
                   <Link to={`/product/${category.name}`}>
-                  <div className="card-body">
-                    <h2 className="card-title">
-                      {category.name.toUpperCase()}
-                    </h2>
-                    <p>If a dog chews shoes whose shoes does he choose?</p>
-                    <div className="card-actions justify-end">
-                      <button className="btn btn-primary btn-sm font-bold  px-2">
-                        Buy Now
-                      </button>
+                    <div className="card-body">
+                      <h2 className="card-title">
+                        {category.name.toUpperCase()}
+                      </h2>
+                      <p>If a dog chews shoes whose shoes does he choose?</p>
+                      <div className="card-actions justify-end">
+                        <button className="btn btn-primary btn-sm font-bold  px-2">
+                          Buy Now
+                        </button>
+                      </div>
                     </div>
-                  </div>
                   </Link>
                 </div>
               ))}
@@ -154,7 +150,6 @@ const HomePage = () => {
                 <div className="card-body   opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black bg-opacity-50 text-white">
                   <h3 className="card-title ">{product.title.toUpperCase()}</h3>
                   <p className="mt-3">{product.description}</p>
-                  
 
                   <div className="card-actions mt-3 justify-between">
                     <h2 className="card-title  text-secondary text-xl ml-4 font-bold">
@@ -168,13 +163,12 @@ const HomePage = () => {
                     </button>
                   </div>
                 </div>
-                
               </div>
             ))}
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };

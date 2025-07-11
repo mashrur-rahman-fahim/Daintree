@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from "react";
-import { Navbar } from "../components/navbar.jsx";
-import { Link, useNavigate  } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { api } from "../../lib/axios";
 import toast from "react-hot-toast";
 import { AuthContext } from "../context/AuthContext";
+import { Navbar } from "../components/Navbar";
 
 export const LoginPage = () => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -12,14 +13,14 @@ export const LoginPage = () => {
     email: "",
     password: "",
   });
-  const navigate=useNavigate();
-  const {checkAuth,loggedIn,setLoggedIn,loading}=useContext(AuthContext);
-  useEffect(()=>{
+  const navigate = useNavigate();
+  const { checkAuth, loggedIn, setLoggedIn, loading } = useContext(AuthContext);
+  useEffect(() => {
     checkAuth();
-    if(loggedIn && !loading){
+    if (loggedIn && !loading) {
       navigate("/");
     }
-  },[checkAuth,navigate,loggedIn,loading]);
+  }, [checkAuth, navigate, loggedIn, loading]);
 
   const handleChange = (e) => {
     setFormData({
@@ -36,13 +37,12 @@ export const LoginPage = () => {
       });
 
       if (res.status == 200) {
-       toast.success(res.data.message);
-       setLoggedIn(true);
+        toast.success(res.data.message);
+        setLoggedIn(true);
         navigate("/");
-      }
-      else{
+      } else {
         toast.error(res.data.message);
-       setLoggedIn(false);
+        setLoggedIn(false);
       }
     } catch (error) {
       console.log(error);
@@ -54,7 +54,6 @@ export const LoginPage = () => {
     <div>
       <Navbar />
       <div className="login  min-w-[1024px] max-w-[1280px] mx-auto  flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">
-        
         <div className="container   max-w-lg   p-8  ">
           <div className="top text-center text-3xl text-primary font-bold mb-6">
             <h1>Account Login</h1>
