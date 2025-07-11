@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ShoppingCart, User } from "lucide-react";
 import { CartContext } from "../context/CartContext";
 import { debounce } from "lodash";
@@ -50,9 +50,9 @@ export const Navbar = () => {
     <div className="navbar ">
       <div className="  min-w-[1024px] max-w-[1280px] mx-auto h-20 container flex justify-between items-center ">
         <Link to="/">
-          <logo className="ml-4 text-primary font-bold text-3xl mr-5">
+          <div className="ml-4 text-primary font-bold text-3xl mr-5">
             DAINTREE
-          </logo>
+          </div>
         </Link>
         <div className="relative w-full max-w-3xl">
           <input
