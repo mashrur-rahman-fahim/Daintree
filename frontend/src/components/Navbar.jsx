@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ShoppingCart, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { LogOut, ShoppingCart, User } from "lucide-react";
 import { CartContext } from "../context/CartContext";
 import { debounce } from "lodash";
 import { api } from "../../lib/axios";
@@ -10,8 +10,8 @@ export const Navbar = () => {
   const { cart,addedToCart } = useContext(CartContext);
   const [query, setQuery] = useState();
   const [results, setResults] = useState([]);
-  const {checkAuth,loggedIn,loading}=useContext(AuthContext);
-  
+  const {checkAuth,loggedIn,loading,logout}=useContext(AuthContext);
+  const navigate =useNavigate();
   
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export const Navbar = () => {
   }, [query, searchProduct]);
   return (
     <div className={`navbar ${addedToCart?"pointer-events-none opacity-35":""} `}>
-      <div className="  min-w-[1024px] max-w-[1280px] mx-auto h-20 container flex justify-between items-center ">
+      <div className="  min-w-[1280px] max-w-[1280px] mx-auto h-20 container flex justify-between items-center ">
         <Link to="/">
           <div className="ml-4 text-primary font-bold text-3xl mr-5">
             DAINTREE
@@ -80,7 +80,7 @@ export const Navbar = () => {
           </div>
         </div>
 
-        <ul className="mr-4 flex items-center gap-6 ml-5">
+        <ul className="mr-4 flex items-center gap-6 ">
           <li className="relative">
            <Link to="/cart">
              <ShoppingCart className="text-primary  h-8 w-8" />
@@ -99,11 +99,15 @@ export const Navbar = () => {
             </Link>
           </li>)}
           {loggedIn && !loading && (
+            <>
+          
             <Link to="/profile">
               <li>
               <User className="text-primary h-8 w-8" />
             </li>
             </Link>
+              <LogOut onClick={()=>logout(navigate)} className="text-secondary h-8 w-8"></LogOut>
+            </>
           )}
         </ul>
       </div>

@@ -110,7 +110,7 @@ export const CartPage = () => {
     <div className=" min-h-screen flex flex-col ">
       <Navbar />
       <div className="cart-boundary flex-grow">
-        <div className="container max-w-[1280px] min-w-[1024px] mx-auto">
+        <div className="container max-w-[1280px] min-w-[1280px] mx-auto">
           <div className="top">
             <div className="header flex  gap-2 p-4">
               <h1 className="w-32 text-lg font-bold p-4 bg-base-200 rounded-lg">
@@ -137,7 +137,7 @@ export const CartPage = () => {
                 >
                   <img
                     src={item.image}
-                    alt={item.title}
+                    alt='product'
                     className="w-32 h-32 object-cover rounded-lg"
                   />
                   <h2 className="flex-grow-[2]  text-lg break-words">

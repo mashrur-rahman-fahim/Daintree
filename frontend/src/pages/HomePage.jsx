@@ -22,7 +22,7 @@ const HomePage = () => {
             "Content-Type": "application/json",
           },
           params: {
-            limit: 10,
+            limit: 9,
             sort: "-createdAt",
           },
         });
@@ -126,11 +126,11 @@ const HomePage = () => {
         </div>
       </div>
       <div id="product-section" className="products ">
-        <div className="container mt-8 mx-auto min-w-[1024px] max-w-[1280px]">
+        <div className="container mt-8 mx-auto min-w-[1280px]  max-w-[1280px]">
           <h1 className="mb-4 ml-4 text-primary text-3xl font-bold">
             Featured Products
           </h1>
-          <div className="grid lg:grid-cols-4  grid-cols-3 gap-3 ml-4 mr-4">
+          <div className="grid   grid-cols-3 gap-4 ml-4 mr-4">
             {products.map((product) => (
               <div
                 key={product._id}

@@ -76,7 +76,7 @@ export const ProductPage = () => {
           addedToCart ? "pointer-events-none opacity-35" : ""
         }`}
       >
-        <div className="container  flex justify-between mx-auto min-w-[1024px] max-w-[1280px] px-4">
+        <div className="container  flex justify-between mx-auto min-w-[1280px] max-w-[1280px] px-4">
           <div className="left_col mt-10">
             <div className="left_col_top border border-base-300 rounded-xl w-80 mr-4 bg-base-200 p-6">
               <h1 className="text-2xl font-bold">Price Range</h1>
@@ -127,7 +127,7 @@ export const ProductPage = () => {
             </div>
           </div>
           <div className="right_col">
-            <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3  gap-4">
               {filteredProducts.map((product) => (
                 <div key={product._id} className="card bg-base-200  shadow-sm">
                   <figure>

@@ -53,7 +53,7 @@ export const LoginPage = () => {
   return (
     <div>
       <Navbar />
-      <div className="login  min-w-[1024px] max-w-[1280px] mx-auto  flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">
+      <div className="login  min-w-[1280px] max-w-[1280px] mx-auto  flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">
         <div className="container   max-w-lg   p-8  ">
           <div className="top text-center text-3xl text-primary font-bold mb-6">
             <h1>Account Login</h1>
