@@ -10,6 +10,7 @@ import brandRoutes from "./routes/brandRoutes.js";
 import orderRoutes from "./routes/orderRouters.js";
 import path from "path";
 import helmet from "helmet";
+import mailRoutes from "./routes/mailRoutes.js";
 //add cors middleware
 
 const app = express();
@@ -46,6 +47,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/brands", brandRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/mail", mailRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));

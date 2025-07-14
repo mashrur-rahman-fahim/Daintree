@@ -15,13 +15,21 @@ export const LoginPage = () => {
     password: "",
   });
   const navigate = useNavigate();
-  const { checkAuth, loggedIn, setLoggedIn, loading } = useContext(AuthContext);
-  useEffect(() => {
+  const { setLoggedIn } = useContext(AuthContext);
+  useEffect(()=>{
+    const checkAuth = async () => {
+      try {
+        const res = await api.get("/auth/profile", { withCredentials: true });
+        if (res.status === 200 && res.data.user ) {
+          setLoggedIn(true);
+          navigate("/");
+        }
+      } catch (error) {
+        setLoggedIn(false);
+      }
+    };
     checkAuth();
-    if (loggedIn && !loading) {
-      navigate("/");
-    }
-  }, [checkAuth, navigate, loggedIn, loading]);
+  }, [navigate, setLoggedIn]);
 
   const handleChange = (e) => {
     setFormData({
@@ -38,9 +46,17 @@ export const LoginPage = () => {
       });
 
       if (res.status == 200) {
-        toast.success(res.data.message);
-        setLoggedIn(true);
-        navigate("/");
+        
+        const res2=await api.get('/auth/profile', { withCredentials: true });
+        if(res2.data.user){
+          toast.success(res.data.message);
+          setLoggedIn(true);
+          navigate("/");
+        }
+        else{
+          toast.error("Please verify your email first");
+          navigate("/verify-email");
+        }
       } else {
         toast.error(res.data.message);
         setLoggedIn(false);

@@ -15,7 +15,7 @@ export const SignUp = () => {
     address: "",
     phone: "",
   });
-  const { checkAuth, loggedIn, loading } = React.useContext(AuthContext);
+  const { setLoggedIn } = React.useContext(AuthContext);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleSignUp = async (e) => {
@@ -32,9 +32,11 @@ export const SignUp = () => {
       });
       if (res.status === 201) {
         console.log("Sign up successful:", res.data);
-        toast.success("Sign up successful!");
-        navigate("/login"); // Redirect to login page after successful sign up
-        // Optionally redirect or show a success message
+        toast.success("OTP sent to your email");
+        const accessToken = await api.get('/auth/profile', { withCredentials: true });
+        if(accessToken){
+        navigate("/verify-email");
+      }
       } else {
         console.error("Sign up failed:", res.data);
       }
@@ -43,18 +45,21 @@ export const SignUp = () => {
       toast.error("Sign up failed. Please try again.");
     }
   };
-  useEffect(() => {
+ useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await api.get("/auth/profile", { withCredentials: true });
+        if (res.status === 200 && res.data.user) {
+          setLoggedIn(true);
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        setLoggedIn(false);
+      }
+    };
     checkAuth();
-    const interval = setInterval(() => {
-      checkAuth();
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [checkAuth]);
-  useEffect(() => {
-    if (loggedIn && !loading) {
-      navigate("/");
-    }
-  }, [loggedIn, loading, navigate]);
+  }, [navigate, setLoggedIn]);
   return (
     <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />

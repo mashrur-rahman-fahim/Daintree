@@ -20,8 +20,10 @@
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.525.0",
     "mongodb": "^6.17.0",
     "mongoose": "^8.16.1",
+    "nodemailer": "^7.0.5",
     "path-to-regexp": "^8.2.0"
   }
 }

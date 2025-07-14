@@ -74,7 +74,9 @@ export const ProfilePage = () => {
         withCredentials: true,
       });
       if (res.status === 200) {
+        
         toast.success("Account deleted successfully!");
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
@@ -85,10 +87,10 @@ export const ProfilePage = () => {
   return (
     <div className="profile min-h-screen flex flex-col bg-base-100">
       <Navbar />
-      <div className="container w-full max-w-2xl mx-auto px-2 sm:px-4 flex-grow py-4 sm:py-10">
+      <div className="container w-full max-w-4xl mx-auto px-2 sm:px-4 flex-grow py-4 sm:py-10">
         {/* Profile Card */}
         <div className="profile-info mb-8 sm:mb-12">
-          <div className="bg-base-200 rounded-xl shadow-lg p-3 sm:p-8 w-full mx-auto">
+          <div className="bg-base-200 rounded-xl shadow-lg p-3 sm:p-8 w-full max-w-3xl mx-auto">
             <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-primary text-center">
               Profile Information
             </h1>
