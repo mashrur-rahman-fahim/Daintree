@@ -64,7 +64,7 @@ export const Navbar = () => {
         </Link>
 
         {/* Desktop Search */}
-        <div className="hidden md:flex relative flex-1 max-w-2xl mx-6">
+        <div className="hidden md:flex relative flex-1 max-w-2xl ">
           <input
             type="text"
             value={query || ""}
@@ -115,17 +115,17 @@ export const Navbar = () => {
             </div>
             <div
               tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow bg-base-100/95 backdrop-blur-md rounded-box w-72 mt-2"
+              className="dropdown-content z-[1] menu p-2 shadow   rounded-box w-72 mt-2"
             >
               <input
                 type="text"
                 value={query || ""}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products..."
-                className="input input-primary w-full text-sm"
+                className="input input-primary w-full ml-8 text-sm"
               />
               {query && results.length > 0 && (
-                <div className="mt-2 max-h-60 overflow-y-auto">
+                <div className="mt-2 max-h-60 ml-8 bg-base-100/95 backdrop-blur-sm overflow-y-auto">
                   {results.map((product) => (
                     <Link to={`/products/${product._id}`} key={product._id}>
                       <div className="text-sm font-medium border-b border-base-300 last:border-0 h-12 flex items-center hover:bg-base-200 transition-colors duration-150 px-2">
