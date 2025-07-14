@@ -70,7 +70,7 @@ export const Navbar = () => {
             value={query || ""}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search products..."
-            className="input input-primary w-full shadow-lg focus:outline-none text-sm"
+            className="input input-primary w-full  shadow-lg focus:outline-none text-sm"
           />
 
           <div
@@ -122,10 +122,10 @@ export const Navbar = () => {
                 value={query || ""}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products..."
-                className="input input-primary w-full ml-8 text-sm"
+                className="input input-primary w-full ml-16 text-sm"
               />
               {query && results.length > 0 && (
-                <div className="mt-2 max-h-60 ml-8 bg-base-100/95 backdrop-blur-sm overflow-y-auto">
+                <div className="mt-2 max-h-60 ml-16 bg-base-100/95 backdrop-blur-sm overflow-y-auto">
                   {results.map((product) => (
                     <Link to={`/products/${product._id}`} key={product._id}>
                       <div className="text-sm font-medium border-b border-base-300 last:border-0 h-12 flex items-center hover:bg-base-200 transition-colors duration-150 px-2">
