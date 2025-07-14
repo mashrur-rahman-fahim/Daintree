@@ -19,6 +19,7 @@ export const Dashboard = () => {
   return (
     <div>
         <button onClick={handleLogout} className='btn btn-primary '>Logout</button>
+      
     </div>
   )
 }

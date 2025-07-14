@@ -105,8 +105,8 @@ export const Navbar = () => {
               <li>
               <User className="text-primary h-8 w-8" />
             </li>
-            </Link>
-              <LogOut onClick={()=>logout(navigate)} className="text-secondary h-8 w-8"></LogOut>
+            </Link >
+              <LogOut onClick={()=>logout(navigate)} className="text-error h-8 w-8"></LogOut>
             </>
           )}
         </ul>

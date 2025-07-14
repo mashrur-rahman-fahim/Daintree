@@ -70,7 +70,7 @@ const HomePage = () => {
       >
         <Navbar />
 
-        <div className="    mt-4 bg-[#000E0A1] min-w-[1024px] max-w-[1280px]  mx-auto  py-20 text-center px-4 ">
+        <div className="    mt-4 bg-[#000E0A1] min-w-[1280px] max-w-[1280px]  mx-auto  py-20 text-center px-4 ">
           <div className=" mx-auto">
             <h1 className="text-4xl sm:text-5xl font-bold text-primary tracking-wider">
               DAINTREE
@@ -96,7 +96,7 @@ const HomePage = () => {
         </div>
 
         <div id="categories" className="category mt-8   ">
-          <div className="container mx-auto min-w-[1024px] max-w-[1280px]  ">
+          <div className="container mx-auto min-w-[1280px] max-w-[1280px]  ">
             <h1 className="ml-4 mb-4 text-primary text-3xl font-bold ">
               Categories
             </h1>

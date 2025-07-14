@@ -6,6 +6,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { ProductPage } from "./pages/ProductPage";
 import { CartPage } from "./pages/CartPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { SignUp } from "./pages/SignUp";
 const App = () => {
   return (
     <div className="scroll-smooth">
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/product/:category" element={<ProductPage/>}/>
           <Route path="/cart" element={<CartPage/>}/>
           <Route path="/profile" element={<ProfilePage/>}/>
+          <Route path="/signup" element={<SignUp/>}/>
         </Routes>
       </div>
     </BrowserRouter>

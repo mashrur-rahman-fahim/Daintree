@@ -4,11 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { api } from "../../lib/axios";
+import toast from "react-hot-toast";
 
 export const ProfilePage = () => {
   const { checkAuth, loggedIn, loading } = React.useContext(AuthContext);
   const [profile, setProfile] = React.useState(null);
   const [orderHistory, setOrderHistory] = React.useState();
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [editForm, setEditForm] = React.useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
   const navigate = useNavigate();
   useEffect(() => {
     checkAuth();
@@ -31,12 +39,48 @@ export const ProfilePage = () => {
 
         setProfile(res.data.user);
         setOrderHistory(res.data.user.orderHistory);
+        // Set initial form data
+        setEditForm({
+          name: res.data.user.name,
+          email: res.data.user.email,
+          phone: res.data.user.phone,
+          address: res.data.user.address,
+        });
       } catch (error) {
         console.log(error);
       }
     };
     getProfile();
   }, []);
+  const handleUpdateProfile = async () => {
+    try {
+      const res=await api.put("/auth/updateProfile",editForm,{withCredentials:true});
+      if (res.status===200){
+       
+        setProfile((prev) => ({
+          ...prev,
+          ...editForm,
+        }));
+         toast.success("Profile updated successfully!");
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+  const handleDeleteAccount = async () => {
+    try {
+      const res = await api.delete("/auth/deleteProfile", { withCredentials: true });
+      if (res.status === 200) {
+        toast.success("Account deleted successfully!");
+        
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error deleting account. Please try again.");
+    }
+  }
+
   return (
     <div className="profile min-h-screen flex flex-col bg-base-100">
       <Navbar />
@@ -55,22 +99,129 @@ export const ProfilePage = () => {
                   </div>
                 </div>
                 <div className="space-y-4 w-full max-w-md">
-                  <div className="flex items-center p-3 bg-base-100 rounded-lg">
-                    <span className="text-base-content/60 w-24">Name</span>
-                    <span className="font-medium">{profile.name}</span>
-                  </div>
-                  <div className="flex items-center p-3 bg-base-100 rounded-lg">
-                    <span className="text-base-content/60 w-24">Email</span>
-                    <span className="font-medium">{profile.email}</span>
-                  </div>
-                  <div className="flex items-center p-3 bg-base-100 rounded-lg">
-                    <span className="text-base-content/60 w-24">Phone</span>
-                    <span className="font-medium">{profile.phone}</span>
-                  </div>
-                  <div className="flex items-center p-3 bg-base-100 rounded-lg">
-                    <span className="text-base-content/60 w-24">Address</span>
-                    <span className="font-medium">{profile.address}</span>
-                  </div>
+                  {isEditing ? (
+                    // Edit mode - show input fields
+                    <>
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text font-medium">Name</span>
+                        </label>
+                        <input
+                          type="text"
+                          className="input input-bordered w-full"
+                          value={editForm.name}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, name: e.target.value })
+                          }
+                        />
+                      </div>
+                      
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text font-medium">Phone</span>
+                        </label>
+                        <input
+                          type="tel"
+                          className="input input-bordered w-full"
+                          value={editForm.phone}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, phone: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="form-control">
+                        <label className="label">
+                          <span className="label-text font-medium">
+                            Address
+                          </span>
+                        </label>
+                        <input
+                          type="text"
+                          className="input input-bordered w-full"
+                          value={editForm.address}
+                          onChange={(e) =>
+                            setEditForm({
+                              ...editForm,
+                              address: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    // View mode - show profile data
+                    <>
+                      <div className="flex items-center p-3 bg-base-100 rounded-lg">
+                        <span className="text-base-content/60 w-24">Name</span>
+                        <span className="font-medium">{profile.name}</span>
+                      </div>
+                      <div className="flex items-center p-3 bg-base-100 rounded-lg">
+                        <span className="text-base-content/60 w-24">Email</span>
+                        <span className="font-medium">{profile.email}</span>
+                      </div>
+                      <div className="flex items-center p-3 bg-base-100 rounded-lg">
+                        <span className="text-base-content/60 w-24">Phone</span>
+                        <span className="font-medium">{profile.phone}</span>
+                      </div>
+                      <div className="flex items-center p-3 bg-base-100 rounded-lg">
+                        <span className="text-base-content/60 w-24">
+                          Address
+                        </span>
+                        <span className="font-medium">{profile.address}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                  {isEditing ? (
+                    <>
+                      <button
+                        className="btn btn-success font-bold px-6"
+                        onClick={() => {
+                          handleUpdateProfile();
+                          setIsEditing(false);
+                        }}
+                      >
+                        Save Changes
+                      </button>
+                      <button
+                        className="btn btn-secondary font-bold px-6"
+                        onClick={() => {
+                          setIsEditing(false);
+                          // Reset form to current profile data
+                          setEditForm({
+                            name: profile.name,
+                            email: profile.email,
+                            phone: profile.phone,
+                            address: profile.address,
+                          });
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        className="btn btn-secondary font-bold px-6"
+                        onClick={() => {
+                          setIsEditing(true);
+                        }}
+                      >
+                        Edit Profile
+                      </button>
+                      <button
+                        className="btn btn-error font-bold px-6"
+                        onClick={() => {
+                          handleDeleteAccount();
+                          console.log("Delete Account clicked");
+                        }}
+                      >
+                        Delete Account
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             ) : (
@@ -81,18 +232,14 @@ export const ProfilePage = () => {
           </div>
         </div>
 
-        {/* Order History */}
         {orderHistory && (
           <div className="bg-base-200 rounded-xl shadow-lg p-6">
-            
-
             {orderHistory && (
               <div className="bg-base-200 rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold mb-6 text-primary text-center">
                   Order History
                 </h2>
 
-                {/* Table Header */}
                 <div className="hidden md:grid grid-cols-7 gap-4 p-4 font-semibold text-base-content/70 border-b border-base-300">
                   <div className="col-span-1">Image</div>
                   <div className="col-span-1">Product</div>
@@ -102,7 +249,6 @@ export const ProfilePage = () => {
                   <div>Status</div>
                 </div>
 
-                {/* Group orders by date */}
                 {[
                   ...new Set(
                     orderHistory.map((history) =>
