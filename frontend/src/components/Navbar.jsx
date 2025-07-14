@@ -54,7 +54,7 @@ export const Navbar = () => {
     <div
       className={`navbar ${
         addedToCart ? "pointer-events-none opacity-35" : ""
-      } w-full sticky top-0 z-50`}
+      } w-full sticky backdrop-blur-sm top-0 z-50`}
     >
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex justify-between items-center">
         <Link to="/">

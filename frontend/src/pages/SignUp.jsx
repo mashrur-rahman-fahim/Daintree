@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-
 export const SignUp = () => {
   const [formData, setFormData] = React.useState({
     name: "",
@@ -17,7 +16,7 @@ export const SignUp = () => {
     phone: "",
   });
   const { checkAuth, loggedIn, loading } = React.useContext(AuthContext);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -44,29 +43,29 @@ export const SignUp = () => {
       toast.error("Sign up failed. Please try again.");
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     checkAuth();
     const interval = setInterval(() => {
       checkAuth();
     }, 6000);
     return () => clearInterval(interval);
   }, [checkAuth]);
-    useEffect(() => {
-        if (loggedIn && !loading) {
-        navigate("/");
-        }
-    }, [loggedIn, loading, navigate]);
+  useEffect(() => {
+    if (loggedIn && !loading) {
+      navigate("/");
+    }
+  }, [loggedIn, loading, navigate]);
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-base-100">
       <Navbar />
-      <div className="flex-grow max-w-[1280px] min-w-[1280px] mx-auto p-4">
-        <div className="container max-w-lg mx-auto">
-          <h1 className="mt-16 text-3xl font-bold text-center text-primary">
+      <div className="flex-1 flex flex-col items-center justify-center px-2 py-8 sm:py-12">
+        <div className="w-full max-w-md    p-6 sm:p-8 md:p-10">
+          <h1 className="mt-2 text-2xl sm:text-3xl font-bold text-center text-primary">
             Sign Up
           </h1>
-          <form className="mt-6 space-y-6 form">
-            <div className="name">
-              <label className="block  text-secondary mb-2 ml-2 text-lg font-bold">
+          <form className="mt-6 space-y-6" onSubmit={handleSignUp}>
+            <div className="flex flex-col">
+              <label className="block text-secondary mb-2 ml-2 text-base sm:text-lg font-bold">
                 Name
               </label>
               <input
@@ -80,8 +79,8 @@ export const SignUp = () => {
                 required
               />
             </div>
-            <div className="email">
-              <label className="block  text-secondary mb-2 ml-2 text-lg font-bold">
+            <div className="flex flex-col">
+              <label className="block text-secondary mb-2 ml-2 text-base sm:text-lg font-bold">
                 Email
               </label>
               <input
@@ -95,8 +94,8 @@ export const SignUp = () => {
                 required
               />
             </div>
-            <div className="password">
-              <label className="block  text-secondary mb-2 ml-2 text-lg font-bold">
+            <div className="flex flex-col">
+              <label className="block text-secondary mb-2 ml-2 text-base sm:text-lg font-bold">
                 Password
               </label>
               <div className="relative">
@@ -107,25 +106,26 @@ export const SignUp = () => {
                   }
                   placeholder="Enter your password"
                   type={showPassword ? "text" : "password"}
-                  className="input input-primary w-full"
+                  className="input input-primary w-full pr-12"
                   required
                 />
-                {showPassword ? (
-                  <Eye
-                    className="text-secondary absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
-                  />
-                ) : (
-                  <EyeOff
-                    className="text-secondary absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
-                  />
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary focus:outline-none"
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <Eye className="w-5 h-5" />
+                  ) : (
+                    <EyeOff className="w-5 h-5" />
+                  )}
+                </button>
               </div>
             </div>
-
-            <div className="address">
-              <label className="block  text-secondary mb-2 ml-2 text-lg font-bold">
+            <div className="flex flex-col">
+              <label className="block text-secondary mb-2 ml-2 text-base sm:text-lg font-bold">
                 Address
               </label>
               <input
@@ -139,8 +139,8 @@ export const SignUp = () => {
                 required
               />
             </div>
-            <div className="phone">
-              <label className="block  text-secondary mb-2 ml-2 text-lg font-bold">
+            <div className="flex flex-col">
+              <label className="block text-secondary mb-2 ml-2 text-base sm:text-lg font-bold">
                 Phone
               </label>
               <input
@@ -150,13 +150,13 @@ export const SignUp = () => {
                 }
                 placeholder="Enter your phone number"
                 type="tel"
-                className="mb-6 input input-primary w-full"
+                className="input input-primary w-full mb-2"
                 required
               />
             </div>
             <button
-              onClick={handleSignUp}
-              className="shadow-xl btn btn-primary w-full font-bold text-xl"
+              type="submit"
+              className="shadow-xl btn btn-primary w-full font-bold text-base sm:text-xl   mt-2"
             >
               Sign Up
             </button>
