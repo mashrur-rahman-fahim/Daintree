@@ -9,6 +9,7 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import brandRoutes from "./routes/brandRoutes.js";
 import orderRoutes from "./routes/orderRouters.js";
 import path from "path";
+import helmet from "helmet";
 //add cors middleware
 
 const app = express();
@@ -16,6 +17,21 @@ app.use(express.json());
 const __dirname = path.resolve();
 
 app.use(cookieParser());
+
+// Content Security Policy - MUST be before all other middleware
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      fontSrc: ["'self'", "data:"],
+      imgSrc: ["'self'", "data:"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      objectSrc: ["'none'"],
+      connectSrc: ["'self'"],
+    },
+  })
+);
 
 if (process.env.NODE_ENV !== "production") {
   app.use(
@@ -31,25 +47,9 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/brands", brandRoutes);
 app.use("/api/orders", orderRoutes);
 
-// --- Content Security Policy to allow fonts, images, scripts, and styles ---
-import helmet from "helmet";
-
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      fontSrc: ["'self'", "data:"],
-      imgSrc: ["'self'", "data:"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      objectSrc: ["'none'"],
-      connectSrc: ["'self'"],
-    },
-  })
-);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
-  app.get("", (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
   });
 }
