@@ -44,7 +44,10 @@ export const loginUser = async (req, res) => {
     }
 
     const token = generateToken(user._id);
-    res.cookie("access_token", token, { httpOnly: true, maxAge: Number(process.env.MAX_AGE) }); // 7 days
+    res.cookie("access_token", token, { httpOnly: true, maxAge: Number(process.env.MAX_AGE),
+      secure: true,         // required for HTTPS
+      sameSite: "none"      // required for cross-site cookies
+    }); // 7 days
 
     return res.status(200).json({ message: "User logged in successfully" });
   } catch (error) {
