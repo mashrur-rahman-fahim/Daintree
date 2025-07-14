@@ -31,11 +31,27 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/brands", brandRoutes);
 app.use("/api/orders", orderRoutes);
 
+// --- Content Security Policy to allow fonts, images, scripts, and styles ---
+import helmet from "helmet";
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      fontSrc: ["'self'", "data:"],
+      imgSrc: ["'self'", "data:"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      objectSrc: ["'none'"],
+      connectSrc: ["'self'"],
+    },
+  })
+);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
   app.get("", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-});
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
 }
 connectDB().then(() =>
   app.listen(process.env.PORT, () =>
