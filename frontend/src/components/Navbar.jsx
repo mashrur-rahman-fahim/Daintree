@@ -7,7 +7,7 @@ import { api } from "../../lib/axios";
 import { AuthContext } from "../context/AuthContext";
 
 export const Navbar = () => {
-  const { cart, addedToCart } = useContext(CartContext);
+  const { cart, cartLength } = useContext(CartContext);
   const [query, setQuery] = useState();
   const [results, setResults] = useState([]);
   const { checkAuth, loggedIn, loading, logout } = useContext(AuthContext);
@@ -52,9 +52,7 @@ export const Navbar = () => {
   }, [query, searchProduct]);
   return (
     <div
-      className={`navbar ${
-        addedToCart ? "pointer-events-none opacity-35" : ""
-      } w-full sticky backdrop-blur-sm top-0 z-50`}
+      className={`navbar w-full sticky backdrop-blur-sm top-0 z-50`}
     >
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex justify-between items-center">
         <Link to="/">
@@ -143,9 +141,9 @@ export const Navbar = () => {
             <Link to="/cart">
               <ShoppingCart className="text-primary h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 hover:text-primary-focus transition-colors duration-200" />
             </Link>
-            {cart.length > 0 && (
+            {cartLength > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
-                {cart.length}
+                {cartLength}
               </span>
             )}
           </div>

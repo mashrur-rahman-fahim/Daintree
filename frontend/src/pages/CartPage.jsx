@@ -6,14 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import toast from "react-hot-toast";
 import { api } from "../../lib/axios";
-import { DeleteIcon, LucideDelete, Trash2 } from "lucide-react";
+import { DeleteIcon, LucideDelete, RefreshCcw, Trash2 } from "lucide-react";
 
 export const CartPage = () => {
-  const { cart, setCart } = useContext(CartContext);
-  const [cartItems, setCartItems] = React.useState([]);
+  const { cart, setCart, addToCart, setCartLength } = useContext(CartContext);
+  const [cartItems, setCartItems] = React.useState(cart);
   const { checkAuth, loggedIn, loading } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  useEffect(() => {
+    setCartItems(cart);
+  }, [cart]);
   useEffect(() => {
     checkAuth();
     const interval = setInterval(() => {
@@ -22,28 +24,12 @@ export const CartPage = () => {
     return () => clearInterval(interval);
   }, [checkAuth]);
 
-  useEffect(() => {
-    const removeDuplicates = (arr) => {
-      const uniqueItems = [];
-      arr.forEach((item) => {
-        const existingItem = uniqueItems.find(
-          (uniqueItem) => uniqueItem._id === item._id
-        );
-        if (existingItem) {
-          existingItem.quantity += 1;
-        } else {
-          uniqueItems.push({ ...item });
-        }
-      });
-      return uniqueItems;
-    };
-    setCartItems(removeDuplicates(cart));
-  }, [cart]);
+  console.log(cartItems);
   const changeQuantity = async (e, item) => {
     try {
       let inputVal = parseInt(e.target.value);
       if (inputVal < 1 || isNaN(inputVal)) {
-        inputVal = 0;
+        inputVal = "";
       }
       const product = await api.get(`/products/getById/${item._id}`);
 
@@ -57,9 +43,13 @@ export const CartPage = () => {
         }
         return cartItem;
       });
+
       setCartItems(updatedCartItems);
-      console.log(updatedCartItems);
       localStorage.setItem("cart", JSON.stringify(updatedCartItems));
+      setCart(updatedCartItems);
+      if(typeof setCartLength === "function" && inputVal) {
+        setCartLength(updatedCartItems.reduce((total, item) => total + item.quantity, 0));
+      }
     } catch (error) {
       console.error("Error updating quantity:", error);
     }
@@ -71,6 +61,10 @@ export const CartPage = () => {
     setCartItems(updatedCart);
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
+    if (typeof setCartLength === "function") {
+      setCartLength(updatedCart.reduce((total, item) => total + item.quantity, 0));
+    }
+    toast.success(`${item.title} removed from cart!`);
   };
   const handleConfirmOrder = async () => {
     if (!loggedIn && !loading) {
@@ -100,6 +94,13 @@ export const CartPage = () => {
       localStorage.removeItem("cart");
       setCart([]);
       setCartItems([]);
+      if (typeof window !== "undefined" && window.dispatchEvent) {
+        // Trigger storage event for other tabs (optional)
+        window.dispatchEvent(new Event("storage"));
+      }
+      if (typeof setCartLength === "function") {
+        setCartLength(0);
+      }
       toast.success("Order created successfully");
     } catch (error) {
       console.error("Error creating order:", error);
@@ -157,9 +158,9 @@ export const CartPage = () => {
                     </span>
                   </div>
                   {/* Quantity + Delete */}
-                  <div className="md:col-span-2 flex items-center gap-2 justify-between md:justify-center">
+                  <div className="md:col-span-2 flex items-center  justify-between md:justify-center">
                     <input
-                      type="number"
+                      type="tel"
                       min="1"
                       className="input input-primary w-20 text-center text-base md:text-lg"
                       value={item.quantity}
@@ -170,8 +171,9 @@ export const CartPage = () => {
                       onClick={() => deleteCart(item)}
                       className="btn btn-ghost btn-circle text-error hover:bg-error/10"
                     >
-                      <Trash2 size={22} />
+                      <Trash2 size={20} />
                     </button>
+                  
                   </div>
                   {/* Unit Price */}
                   <div className="md:col-span-2 flex items-center justify-center">

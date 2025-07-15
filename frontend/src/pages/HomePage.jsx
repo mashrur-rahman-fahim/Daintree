@@ -48,13 +48,13 @@ const HomePage = () => {
     getCategories();
   }, []);
   const handleAddToCart = (product) => {
-    addToCart(product);
+    addToCart(product, 1);
 
     console.log(addedToCart);
   };
 
   return (
-    <div className={`${addedToCart ? "pointer-events-none opacity-50" : ""}`}>
+    <div>
       <div
         className="banner w-full min-h-screen"
         style={{
@@ -133,7 +133,7 @@ const HomePage = () => {
             Featured Products
           </h1>
           <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
+            {products.map((product) => (product.count > 0 && (
               <div
                 key={product._id}
                 className="card bg-base-100 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 group overflow-hidden"
@@ -148,17 +148,21 @@ const HomePage = () => {
                 </figure>
 
                 <div className="card-body p-4 sm:p-6">
-                  <h3 className="card-title text-lg sm:text-xl font-bold text-primary mb-2 line-clamp-2">
-                    {product.title.toUpperCase()}
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-400 mb-4 line-clamp-3 leading-relaxed">
-                    {product.description}
-                  </p>
+                  <Link to={`/products/${product._id}`}>
+                    {" "}
+                    <h3 className="card-title text-lg sm:text-xl font-bold text-primary mb-2 line-clamp-2">
+                      {product.title.toUpperCase()}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-400 mb-4 line-clamp-3 leading-relaxed">
+                      {product.description}
+                    </p>
+                  </Link>
 
                   <div className="card-actions justify-between items-center mt-auto">
                     <h2 className="text-secondary text-xl sm:text-2xl font-bold">
                       ${product.price}
                     </h2>
+                   
                     <button
                       onClick={() => handleAddToCart(product)}
                       className="btn btn-primary btn-sm hover:btn-secondary transition-colors duration-200 px-4 py-2"
@@ -168,7 +172,7 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            )))}
           </div>
         </div>
       </div>

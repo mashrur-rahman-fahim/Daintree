@@ -70,9 +70,7 @@ export const ProductPage = () => {
 
   return (
     <div
-      className={`${
-        addedToCart ? "pointer-events-none opacity-50" : ""
-      } min-h-screen bg-base-100`}
+      className={` min-h-screen bg-base-100`}
     >
       <Navbar />
       <div className="Products py-8 sm:py-10">
@@ -143,7 +141,7 @@ export const ProductPage = () => {
                   No products found for the selected filters.
                 </div>
               )}
-              {filteredProducts.map((product) => (
+              {filteredProducts.map((product) => (product.count>0 && (
                 <div
                   key={product._id}
                   className="card bg-base-100 shadow-md hover:shadow-xl transform hover:scale-105 transition-all duration-300 group overflow-hidden"
@@ -168,14 +166,14 @@ export const ProductPage = () => {
                       </h2>
                       <button
                         className="btn btn-primary btn-xs sm:btn-sm hover:btn-secondary transition-colors duration-200 px-3 sm:px-4 py-1 sm:py-2"
-                        onClick={() => addToCart(product)}
+                        onClick={() => addToCart(product, 1)}
                       >
                         Buy Now
                       </button>
                     </div>
                   </div>
                 </div>
-              ))}
+              )))}
             </div>
             {/* Pagination */}
             <div className="pagination flex flex-wrap justify-center items-center gap-1 sm:gap-2 mt-8 sm:mt-10">
