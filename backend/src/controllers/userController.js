@@ -18,7 +18,7 @@ export const registerUser = async (req, res) => {
         address,
         phone,
       });
-      const otp= Math.floor(100000 + Math.random() * 900000).toString();
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
       newUser.otp = otp;
       newUser.otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 minutes
       const token = generateToken(newUser._id);
@@ -28,7 +28,11 @@ export const registerUser = async (req, res) => {
       }); // 7 days
       await newUser.save();
       await sendOtp(email, otp);
-      return res.status(201).json({ message: "User created successfully, please verify your email" });
+      return res
+        .status(201)
+        .json({
+          message: "User created successfully, please verify your email",
+        });
     }
   } catch (error) {
     console.log(error);
@@ -69,8 +73,11 @@ export const loginUser = async (req, res) => {
 };
 export const profile = async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     const user = req.user.emailVerified;
-    const token= req.cookies.access_token;
+    const token = req.cookies.access_token;
     res.status(200).json({ user, token });
   } catch (error) {
     console.log(error);
@@ -79,6 +86,9 @@ export const profile = async (req, res) => {
 };
 export const deleteProfile = async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     const user = await User.findByIdAndDelete(req.user._id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -92,6 +102,9 @@ export const deleteProfile = async (req, res) => {
 };
 export const updateProfile = async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     const { name, address, phone } = req.body;
     const user = await User.findById(req.user._id);
     if (!user) {
@@ -110,12 +123,19 @@ export const updateProfile = async (req, res) => {
 };
 export const getProfile = async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     const user = await User.findById(req.user._id).populate({
       path: "orderHistory.orderId",
       populate: {
         path: "items._id",
       },
     });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     res.status(200).json({ user });
   } catch (error) {
