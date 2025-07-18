@@ -51,12 +51,22 @@ export const AdminPage = () => {
       setLoading(true);
       try {
         const response = await api.get("/categories");
-        setCategories(response.data);
-        const res2 = await api.get(`/brands/${response.data[0].name}`);
-        setBrands(res2.data);
+        setCategories(Array.isArray(response.data) ? response.data : []);
+
+        if (
+          response.data &&
+          Array.isArray(response.data) &&
+          response.data.length > 0
+        ) {
+          const res2 = await api.get(`/brands/${response.data[0].name}`);
+          setBrands(Array.isArray(res2.data) ? res2.data : []);
+        }
       } catch (error) {
         console.error("Error fetching categories/brands:", error);
         toast.error("Failed to fetch categories/brands");
+        // Set empty arrays as fallback
+        setCategories([]);
+        setBrands([]);
       } finally {
         setLoading(false);
       }
@@ -72,7 +82,8 @@ export const AdminPage = () => {
         toast.error("Category name cannot be empty");
         return;
       } else {
-        categories.push({ name: newCategory.toLowerCase() });
+        const newCategoryObj = { name: newCategory.toLowerCase() };
+        setCategories([...categories, newCategoryObj]);
         setProductForm({ ...productForm, category: newCategory.toLowerCase() });
       }
       setNewCategory("");
@@ -140,10 +151,13 @@ export const AdminPage = () => {
     console.log(e.target.value);
     try {
       const selectedCategory = await api.get(`/brands/${e.target.value}`);
-      setBrands(selectedCategory.data);
+      setBrands(
+        Array.isArray(selectedCategory.data) ? selectedCategory.data : []
+      );
     } catch (error) {
       console.error("Error fetching brands:", error);
       toast.error("Failed to fetch brands");
+      setBrands([]); // Set empty array as fallback
     }
   };
   const handleAddBrand = async (e) => {
@@ -154,10 +168,10 @@ export const AdminPage = () => {
         toast.error("Brand name cannot be empty");
         return;
       } else {
-        brands.push(newBrand.toLowerCase());
+        setBrands([...brands, newBrand.toLowerCase()]);
         setProductForm({ ...productForm, brand: newBrand.toLowerCase() });
       }
-      setNewBrand([]);
+      setNewBrand("");
       setAddBrand(false);
     } finally {
       setLoading(false);
@@ -194,7 +208,6 @@ export const AdminPage = () => {
                   Manage products, categories, and brands
                 </p>
               </div>
-             
             </div>
           </div>
         </div>
@@ -397,11 +410,15 @@ export const AdminPage = () => {
                               <option disabled value="">
                                 Select Category
                               </option>
-                              {categories.map((category) => (
-                                <option key={category.id} value={category.name}>
-                                  {category.name}
-                                </option>
-                              ))}
+                              {Array.isArray(categories) &&
+                                categories.map((category) => (
+                                  <option
+                                    key={category.id || category.name}
+                                    value={category.name}
+                                  >
+                                    {category.name}
+                                  </option>
+                                ))}
                             </select>
                             <button
                               type="button"
@@ -465,11 +482,12 @@ export const AdminPage = () => {
                               <option disabled value="">
                                 Select Brand
                               </option>
-                              {brands.map((brand) => (
-                                <option key={brand} value={brand}>
-                                  {brand}
-                                </option>
-                              ))}
+                              {Array.isArray(brands) &&
+                                brands.map((brand) => (
+                                  <option key={brand} value={brand}>
+                                    {brand}
+                                  </option>
+                                ))}
                             </select>
                             <button
                               type="button"
