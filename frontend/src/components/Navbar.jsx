@@ -167,7 +167,7 @@ export const Navbar = () => {
           </div>
 
           {admin && !loading && (
-            <Link to="/admin" className="btn btn-primary btn-sm">
+            <Link to="/admin" className="btn btn-primary btn-sm font-medium">
               Admin Panel
             </Link>
           )}
@@ -217,7 +217,7 @@ export const Navbar = () => {
                   {admin && !loading && (
                     <Link
                       to="/admin"
-                      className="text-base-content hover:text-primary transition-colors font-medium py-2"
+                      className="text-base-content hover:text-primary transition-colors font-medium py-2 "
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Admin Panel
