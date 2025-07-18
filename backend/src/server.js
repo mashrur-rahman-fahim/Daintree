@@ -25,11 +25,11 @@ app.use(
     directives: {
       defaultSrc: ["'self'"],
       fontSrc: ["'self'", "data:"],
-      imgSrc: ["'self'", "data:", "https://res.cloudinary.com"],
+      imgSrc: ["'self'", "data:", "https://res.cloudinary.com","https://avatars.githubusercontent.com"],
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       objectSrc: ["'none'"],
-      connectSrc: ["'self'", "https://api.cloudinary.com"],
+      connectSrc: ["'self'", "https://api.cloudinary.com","https://avatars.githubusercontent.com"],
     },
   })
 );
