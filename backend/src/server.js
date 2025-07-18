@@ -25,7 +25,7 @@ app.use(
     directives: {
       defaultSrc: ["'self'"],
       fontSrc: ["'self'", "data:"],
-      imgSrc: ["'self'", "data:", "https://res.cloudinary.com","https://avatars.githubusercontent.com","https://daintree.onrender.com"],
+      imgSrc: ["'self'", "data:", "blob:", "https://res.cloudinary.com","https://avatars.githubusercontent.com","https://daintree.onrender.com"],
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       objectSrc: ["'none'"],
