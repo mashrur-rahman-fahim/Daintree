@@ -166,7 +166,7 @@ export const Navbar = () => {
             )}
           </div>
 
-          {admin && (
+          {admin && !loading && (
             <Link to="/admin" className="btn btn-primary btn-sm">
               Admin Panel
             </Link>
@@ -214,7 +214,7 @@ export const Navbar = () => {
                     <User className="w-5 h-5" />
                     Profile
                   </Link>
-                  {admin && (
+                  {admin && !loading && (
                     <Link
                       to="/admin"
                       className="text-base-content hover:text-primary transition-colors font-medium py-2"
