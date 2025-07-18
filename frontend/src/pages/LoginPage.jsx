@@ -14,22 +14,30 @@ export const LoginPage = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
-  const { setLoggedIn } = useContext(AuthContext);
-  useEffect(()=>{
+  const { setLoggedIn, setAdmin } = useContext(AuthContext);
+  useEffect(() => {
     const checkAuth = async () => {
       try {
         const res = await api.get("/auth/profile", { withCredentials: true });
-        if (res.status === 200 && res.data.user ) {
-          setLoggedIn(true);
-          navigate("/");
+        if (res.status === 200 && res.data.user) {
+          if (res.data.isAdmin) {
+            setLoggedIn(true);
+            setAdmin(true);
+            navigate("/admin");
+          } else {
+            navigate("/");
+            setLoggedIn(true);
+          }
         }
       } catch (error) {
+        console.error("Error checking authentication:", error);
         setLoggedIn(false);
       }
     };
     checkAuth();
-  }, [navigate, setLoggedIn]);
+  }, [navigate, setLoggedIn, setAdmin]);
 
   const handleChange = (e) => {
     setFormData({
@@ -40,20 +48,18 @@ export const LoginPage = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-
+      setLoading(true);
       const res = await api.post("/auth/login", formData, {
         withCredentials: true,
       });
 
       if (res.status == 200) {
-        
-        const res2=await api.get('/auth/profile', { withCredentials: true });
-        if(res2.data.user){
+        const res2 = await api.get("/auth/profile", { withCredentials: true });
+        if (res2.data.user) {
           toast.success(res.data.message);
           setLoggedIn(true);
           navigate("/");
-        }
-        else{
+        } else {
           toast.error("Please verify your email first");
           navigate("/verify-email");
         }
@@ -65,6 +71,8 @@ export const LoginPage = () => {
       console.log(error);
       setLoggedIn(false);
       toast.error("Invalid credentials");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -120,10 +128,20 @@ export const LoginPage = () => {
                 )}
               </button>
             </div>
+            {/* Forgot Password */}
+            <div className="text-right text-sm sm:text-base text-secondary">
+              <Link to="/forgot-password" className="link link-secondary">
+                Forgot Password?
+              </Link>
+            </div>
             <button
               type="submit"
               className="btn btn-primary w-full font-bold text-base sm:text-xl  mt-2"
+              disabled={loading}
             >
+              {loading ? (
+                <span className="loading loading-spinner loading-md mr-2"></span>
+              ) : null}
               Login
             </button>
           </form>

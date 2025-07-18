@@ -5,10 +5,13 @@ import { AuthContext } from "./AuthContext";
 export const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [admin, setAdmin] = useState(false);  
   const logout = async (navigate) => {
     try {
+
       const res = await api.get("/auth/logout", { withCredentials: true });
-      if (res.status == 200) {
+      if (res.status === 200) {
+        setAdmin(false);
         setLoggedIn(false);
         navigate("/login");
       }
@@ -16,12 +19,24 @@ export const AuthProvider = ({ children }) => {
       console.log(error);
     }
   };
-
+ const checkAdmin = async () => {
+    try {
+      const res = await api.get("/auth/profile", { withCredentials: true });
+      if (res.status === 200 && res.data.user) {
+        setAdmin(res.data.isAdmin);
+      }
+    } catch (error) {
+      console.error("Error checking admin status:", error);
+    }
+  }
   const checkAuth = async () => {
     try {
       const res = await api.get("/auth/profile", { withCredentials: true });
 
       if (res.status == 200 && res.data.user ) {
+        if(res.data.isAdmin) {
+          setAdmin(true);
+        }
         setLoggedIn(true);
       } else {
         await api.get("/auth/logout", { withCredentials: true });
@@ -38,7 +53,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ loggedIn, logout, setLoggedIn, checkAuth, loading }}
+      value={{ checkAdmin,setAdmin,admin, loggedIn, logout, setLoggedIn, checkAuth, loading }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,3 +1,4 @@
+import { NotFoundPage } from "./pages/NotFoundPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
@@ -9,6 +10,12 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { SignUp } from "./pages/SignUp";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 import { SingleProductPage } from "./pages/SingleProductPage";
+import { AdminPage } from "./pages/AdminPage";
+import { ForgotPassPage } from "./pages/ForgotPassPage";
+import { VerifyOtpResetPassPage } from "./pages/VerifyOtpResetPassPage";
+import { ResetPassPage } from "./pages/ResetPassPage";
+import { AboutUsPage } from "./pages/AboutUsPage";
+
 const App = () => {
   return (
     <div className="scroll-smooth">
@@ -29,6 +36,15 @@ const App = () => {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/verify-email" element={<VerifyEmailPage />} />
             <Route path="/products/:id" element={<SingleProductPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/forgot-password" element={<ForgotPassPage />} />
+            <Route
+              path="/verify-otp/reset-password/:email"
+              element={<VerifyOtpResetPassPage />}
+            />
+            <Route path="/reset-password/:email" element={<ResetPassPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
       </BrowserRouter>

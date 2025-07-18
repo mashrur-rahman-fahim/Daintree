@@ -78,7 +78,8 @@ export const profile = async (req, res) => {
     }
     const user = req.user.emailVerified;
     const token = req.cookies.access_token;
-    res.status(200).json({ user, token });
+    const isAdmin = req.user.isAdmin;
+    res.status(200).json({ user, token, isAdmin });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error getting user profile" });
@@ -152,3 +153,12 @@ export const logout = (req, res) => {
     res.status(500).json({ message: "Error logging out user" });
   }
 };
+export const totalUsers=async(req, res) => {
+  try {
+    const totalUsers = await User.countDocuments()-1;
+    res.status(200).json({ totalUsers });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error counting users" });
+  }
+}

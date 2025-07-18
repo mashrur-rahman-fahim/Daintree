@@ -18,6 +18,7 @@ export const SignUp = () => {
   const { setLoggedIn } = React.useContext(AuthContext);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const handleSignUp = async (e) => {
     e.preventDefault();
     // Client-side validation for empty fields
@@ -26,6 +27,7 @@ export const SignUp = () => {
       toast.error("Please fill in all fields.");
       return;
     }
+    setLoading(true);
     try {
       const res = await api.post("/auth/register", formData, {
         withCredentials: true,
@@ -33,19 +35,23 @@ export const SignUp = () => {
       if (res.status === 201) {
         console.log("Sign up successful:", res.data);
         toast.success("OTP sent to your email");
-        const accessToken = await api.get('/auth/profile', { withCredentials: true });
-        if(accessToken){
-        navigate("/verify-email");
-      }
+        const accessToken = await api.get("/auth/profile", {
+          withCredentials: true,
+        });
+        if (accessToken) {
+          navigate("/verify-email");
+        }
       } else {
         console.error("Sign up failed:", res.data);
       }
     } catch (error) {
       console.error("Error during sign up:", error);
       toast.error("Sign up failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
- useEffect(() => {
+  useEffect(() => {
     const checkAuth = async () => {
       try {
         const res = await api.get("/auth/profile", { withCredentials: true });
@@ -162,7 +168,11 @@ export const SignUp = () => {
             <button
               type="submit"
               className="shadow-xl btn btn-primary w-full font-bold text-base sm:text-xl   mt-2"
+              disabled={loading}
             >
+              {loading ? (
+                <span className="loading loading-spinner loading-md mr-2"></span>
+              ) : null}
               Sign Up
             </button>
           </form>

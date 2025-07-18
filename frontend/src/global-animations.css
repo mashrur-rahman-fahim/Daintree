@@ -1,0 +1,87 @@
+/* Global animations without zoom effects */
+/* This file ensures smooth animations across the entire app without image scaling */
+
+/* Remove all zoom/scale effects */
+img,
+.product-image,
+.product-image img,
+.card img,
+.card figure img,
+figure img,
+[class*="product"] img {
+  transition: transform 0.3s ease !important;
+  transform: scale(1) !important;
+}
+
+/* Hover state - no zoom, just maintain position */
+.card:hover img,
+.product-card:hover img,
+.group:hover img,
+figure:hover img,
+[class*="product"]:hover img,
+.hover\:scale-105:hover,
+.hover\:scale-110:hover,
+.hover\:scale-108:hover,
+.hover\:scale-103:hover,
+.group-hover\:scale-105,
+.group-hover\:scale-110,
+.group-hover\:scale-108,
+.group-hover\:scale-103 {
+  transform: scale(1) !important;
+  transition: transform 0.3s ease !important;
+}
+
+/* Override any Tailwind scale classes */
+.transition-transform,
+.duration-300,
+.duration-500,
+.duration-700 {
+  transition: transform 0.3s ease !important;
+}
+
+/* Card hover animation - move up on Y axis */
+.card,
+.product-card {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card:hover,
+.product-card:hover {
+  transform: translateY(-8px) !important;
+}
+
+/* Remove zoom keyframe animation */
+@keyframes smoothMoveUp {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-8px);
+  }
+}
+
+/* Apply smooth move up to all hover states */
+.card:hover,
+.product-card:hover {
+  animation: smoothMoveUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card:hover,
+  .product-card:hover {
+    transform: translateY(-4px) !important;
+  }
+}
+
+/* Accessibility: Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .product-card,
+  img,
+  .product-image,
+  .product-image img {
+    transition-duration: 0.1s !important;
+    animation-duration: 0.1s !important;
+  }
+}

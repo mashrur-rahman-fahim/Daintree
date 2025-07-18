@@ -6,16 +6,19 @@ import {
   updateProduct,
   deleteProduct,
   searchProduct,
-  getProductByCategory
+  getProductByCategory,
+  countTotalProducts,
+  
 } from "../controllers/productController.js";
+import { verify } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.get("/", getAllProducts);
 router.get("/getById/:id", getProductById);
-router.post("/", createProduct);
-router.put("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.post("/",verify, createProduct);
+router.put("/:id",verify, updateProduct);
+router.delete("/:id",verify, deleteProduct);
 router.get("/search", searchProduct);
 router.get("/getByCategory/:category", getProductByCategory);
-
+router.get("/total", countTotalProducts);
 export default router;
